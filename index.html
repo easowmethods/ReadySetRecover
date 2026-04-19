@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>READY,SET,RECOVER</title>
+<script defer src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;outline:none}
+html,body{width:100%;height:100%;overflow:hidden;background:#0D0D1A;color:#fff;font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif}
+.screen{position:fixed;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;background:#0D0D1A;overflow:hidden}
+.screen.active{display:flex}
+#s3.active{display:block}
+
+/* S1 */
+#s1{padding:28px 24px;z-index:1000}
+.logo-wrap{text-align:center;margin-bottom:14px;animation:slide-down 0.3s ease-out both}
+.logo-title{display:inline-block;font-size:clamp(28px,9vw,52px);font-weight:900;color:#FF2D2D;letter-spacing:6px;line-height:1;border:3px solid #FF2D2D;padding:8px 18px;animation:pulse-border 2.2s ease-in-out infinite}
+.logo-sub{font-size:clamp(16px,5vw,26px);font-weight:700;color:#FFB800;letter-spacing:3px;margin-top:8px;animation:blink 1s step-end infinite}
+.tagline{font-style:italic;color:#aaa;font-size:13px;text-align:center;margin-bottom:18px;line-height:1.5;animation:fade-in 0.4s 0.35s both}
+.steps{list-style:none;width:100%;max-width:360px;margin-bottom:22px}
+.steps li{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,45,45,0.18);font-size:12px;color:#ccc;line-height:1.4}
+.steps li:nth-child(1){animation:stagger-in 0.3s 0.45s both}
+.steps li:nth-child(2){animation:stagger-in 0.3s 0.56s both}
+.steps li:nth-child(3){animation:stagger-in 0.3s 0.67s both}
+.step-num{min-width:22px;height:22px;border:2px solid #FF2D2D;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#FF2D2D;margin-top:1px}
+.step-label{color:#fff;font-weight:700}
+.cta-btn{background:#FF2D2D;color:#fff;border:none;padding:16px 40px;font-size:16px;font-weight:700;letter-spacing:3px;cursor:pointer;border-radius:3px;animation:stagger-in 0.3s 0.85s both,pulse-btn 2s 1.6s ease-in-out infinite}
+.footer-note{font-size:11px;color:#666;text-align:center;margin-top:14px;max-width:300px;line-height:1.6}
+#lb-icon{position:fixed;top:14px;right:14px;cursor:pointer;display:flex;flex-direction:column;gap:5px;z-index:1001;padding:6px}
+#lb-icon span{display:block;width:22px;height:2px;background:#FFB800;border-radius:2px}
+
+/* S2 */
+#s2{padding:24px;z-index:1000}
+.spin-title{font-size:17px;font-weight:900;color:#FF2D2D;letter-spacing:3px;margin-bottom:18px;text-align:center;animation:pulse-border 1.6s ease-in-out infinite}
+#spin-canvas{border-radius:50%;display:block;cursor:pointer;touch-action:none}
+#spin-result{display:none;text-align:center;margin-top:16px;font-size:14px;font-weight:700;color:#FFB800;letter-spacing:2px;min-height:20px}
+#activate-btn{margin-top:16px;opacity:0;pointer-events:none;background:#FF2D2D;color:#fff;border:none;padding:16px 32px;font-size:15px;font-weight:700;letter-spacing:2px;cursor:pointer;border-radius:3px;transition:opacity 0.4s}
+.tap-hint{font-size:11px;color:#666;margin-top:10px}
+
+/* S3 — QR Hunt */
+#s3{position:fixed;inset:0;background:#000;z-index:1000;overflow:hidden}
+#qr-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
+#qr-canvas{display:none}
+#scan-flash{position:absolute;inset:0;z-index:50;opacity:0;border:8px solid #4CAF50;pointer-events:none;transition:opacity 0.25s}
+#hud{position:absolute;top:0;left:0;right:0;z-index:100;pointer-events:none}
+#hud-top{display:flex;align-items:center;gap:8px;padding:10px 12px;background:rgba(0,0,0,0.75)}
+#level-badge{background:#FF2D2D;color:#fff;font-size:10px;font-weight:700;padding:3px 9px;border-radius:10px;letter-spacing:1px;max-width:130px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:0}
+#hud-score{color:#fff;font-size:13px;font-weight:700;margin-left:auto;flex-shrink:0}
+#hud-timer{color:#4CAF50;font-size:22px;font-weight:900;flex-shrink:0;margin-left:10px;min-width:32px;text-align:right;transition:color 0.5s}
+#hud-timer.t-amber{color:#FFB800}
+#hud-timer.t-red{color:#FF2D2D}
+#hunt-wrap{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:110;pointer-events:none}
+.hunt-label{font-size:13px;font-weight:700;color:#fff;letter-spacing:4px;text-align:center;opacity:0.9}
+.hunt-qnum-big{font-size:clamp(80px,24vw,120px);font-weight:900;color:#FF2D2D;line-height:1;animation:pulse-border 1.2s ease-in-out infinite}
+.hunt-sub{font-size:11px;color:#ccc;margin-top:8px;text-align:center;max-width:220px;line-height:1.6;background:rgba(0,0,0,0.55);padding:6px 14px;border-radius:3px}
+#wrong-qr-msg{position:absolute;bottom:80px;left:20px;right:20px;background:rgba(255,45,45,0.95);color:#fff;padding:13px 16px;border-radius:3px;text-align:center;font-weight:700;font-size:12px;z-index:120;opacity:0;pointer-events:none;transition:opacity 0.3s;letter-spacing:1px}
+#scenario-overlay{position:absolute;inset:0;background:#0D0D1A;z-index:200;display:none;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center}
+.so-pill{font-size:10px;color:#FF2D2D;letter-spacing:3px;font-weight:700;border:1px solid #FF2D2D;display:inline-block;padding:3px 10px;border-radius:10px;margin-bottom:14px;animation:pulse-border 1.5s infinite}
+.so-title{font-size:20px;font-weight:900;color:#fff;letter-spacing:2px;margin-bottom:18px}
+.so-text{font-size:13px;color:#ccc;line-height:1.8;max-width:340px}
+.so-countdown{font-size:11px;color:#666;margin-top:20px;letter-spacing:2px}
+#fallback{position:absolute;inset:0;background:#0D0D1A;z-index:210;display:none;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:10px}
+.fb-title{font-size:13px;color:#FFB800;font-weight:700;margin-bottom:6px;text-align:center;letter-spacing:1px}
+.fb-btn{background:transparent;border:2px solid #FF2D2D;color:#fff;padding:15px;font-size:14px;font-weight:700;cursor:pointer;width:100%;max-width:300px;border-radius:3px;letter-spacing:1px;transition:opacity 0.2s}
+
+/* S4 — Question Overlay */
+#s4{position:fixed;inset:0;background:rgba(8,8,18,0.97);z-index:5000;display:none;flex-direction:column}
+#timer-bar-wrap{width:100%;height:3px;background:#1a0000;flex-shrink:0}
+#timer-bar{height:3px;background:#FF2D2D;transform-origin:left;transition:transform 1s linear}
+#speed-bar-wrap{width:100%;height:7px;background:#111;flex-shrink:0}
+#speed-bar{height:7px;background:#4CAF50;transform-origin:left;transform:scaleX(1)}
+#q-header{background:#FF2D2D;padding:10px 16px;font-size:11px;font-weight:700;letter-spacing:2px;text-align:center;flex-shrink:0;line-height:1.6}
+#q-content{flex:1;padding:18px 16px;display:flex;flex-direction:column;overflow-y:auto;gap:10px}
+#q-speed{font-size:11px;color:#FFB800;font-weight:700;text-align:center;letter-spacing:0.5px;min-height:16px}
+#q-text{font-size:15px;font-weight:700;color:#fff;line-height:1.5}
+#q-options{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.opt-btn{background:#0d0d1a;border:2px solid rgba(255,45,45,0.5);color:#fff;padding:14px 12px;font-size:13px;text-align:left;cursor:pointer;border-radius:3px;line-height:1.4;transition:border-color 0.15s}
+.opt-btn:active{border-color:#FF2D2D}
+.opt-btn.correct{background:rgba(76,175,80,0.15);border-color:#4CAF50;animation:correct-flash 0.2s ease-out}
+.opt-btn.wrong-final{border-color:#FF2D2D;background:rgba(255,45,45,0.08);animation:shake-anim 0.35s both}
+.opt-btn.dim{opacity:0.3;pointer-events:none}
+#q-feedback{text-align:center;font-size:14px;font-weight:700;color:#4CAF50;min-height:20px;letter-spacing:1px}
+#q-fail-msg{text-align:center;font-size:12px;color:#FF2D2D;min-height:18px;line-height:1.4}
+#q-next-hint{text-align:center;font-size:11px;color:#666;letter-spacing:2px;min-height:16px}
+
+/* S5 */
+#s5{padding:28px 24px;text-align:center;gap:4px;z-index:1000}
+.score-lbl{font-size:10px;color:#666;letter-spacing:3px;margin-bottom:2px}
+.score-num{font-size:clamp(56px,16vw,80px);font-weight:900;color:#FF2D2D;line-height:1}
+#correct-count{font-size:12px;color:#888;margin-top:2px;letter-spacing:1px}
+.stars-row{display:flex;gap:6px;justify-content:center;margin:12px 0 8px}
+.star{width:30px;height:30px;background:#222;clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);transition:transform 0.25s}
+.star.lit{background:#FFB800;transform:scale(1.15)}
+#tier-msg{font-size:12px;color:#FFB800;font-weight:700;letter-spacing:1px;line-height:1.5;padding:0 16px;min-height:36px;text-align:center}
+#name-input{background:#0d0d1a;border:2px solid rgba(255,45,45,0.6);color:#fff;padding:13px;font-size:15px;text-align:center;border-radius:3px;width:100%;max-width:300px;margin-top:8px;font-family:inherit}
+#name-input::placeholder{color:#444}
+#name-input:focus{border-color:#FF2D2D}
+#claim-btn{background:#FF2D2D;color:#fff;border:none;padding:15px 32px;font-size:14px;font-weight:700;cursor:pointer;border-radius:3px;letter-spacing:2px;width:100%;max-width:300px;margin-top:8px}
+#other-btn{background:transparent;border:2px solid #FFB800;color:#FFB800;padding:13px;font-size:13px;font-weight:700;cursor:pointer;border-radius:3px;width:100%;max-width:300px;margin-top:4px;letter-spacing:1px}
+
+/* S6 */
+#s6{padding:24px;z-index:1000;justify-content:flex-start;padding-top:36px;overflow-y:auto}
+.lb-title{font-size:24px;font-weight:900;color:#FF2D2D;letter-spacing:4px;margin-bottom:18px;text-align:center;width:100%}
+#lb-table{width:100%;max-width:400px;border-collapse:collapse}
+#lb-table th{font-size:10px;color:#666;text-align:left;padding:6px 4px;border-bottom:1px solid #222;letter-spacing:1px}
+#lb-table td{padding:10px 4px;font-size:12px;border-bottom:1px solid rgba(255,255,255,0.04);vertical-align:middle}
+.lb-rank1 td{background:rgba(255,184,0,0.08)}
+.lb-rank1 td:first-child{color:#FFB800;font-weight:900}
+.lb-new{animation:lb-new-pop 0.5s ease-out}
+.lb-sub{font-size:11px;color:#555;text-align:center;margin-top:14px;letter-spacing:2px;width:100%}
+#back-btn{margin-top:18px;background:transparent;border:2px solid #FF2D2D;color:#FF2D2D;padding:12px 28px;font-size:13px;font-weight:700;cursor:pointer;border-radius:3px;letter-spacing:2px}
+
+@keyframes pulse-border{0%,100%{opacity:1}50%{opacity:0.55}}
+@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+@keyframes slide-down{from{opacity:0;transform:translateY(-28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fade-in{from{opacity:0}to{opacity:1}}
+@keyframes stagger-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse-btn{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+@keyframes shake-anim{0%,100%{transform:translateX(0)}20%{transform:translateX(-9px)}40%{transform:translateX(9px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
+@keyframes correct-flash{0%{transform:scale(1)}50%{transform:scale(1.05)}100%{transform:scale(1)}}
+@keyframes lb-new-pop{from{transform:scale(1.03);opacity:0.7}to{transform:scale(1);opacity:1}}
+</style>
+</head>
+<body>
+
+<!-- S1: Welcome -->
+<div id="s1" class="screen active">
+  <button id="lb-icon" aria-label="Leaderboard"><span></span><span></span><span></span></button>
+  <div class="logo-wrap">
+    <div class="logo-title">Ready, Set</div>
+    <div class="logo-sub">Recover</div>
+  </div>
+  <p class="tagline">"This isn't just a policy... it's a 'Play'book."</p>
+  <ul class="steps">
+    <li><span class="step-num">1</span><span><span class="step-label">SPIN</span> — Draw your crisis scenario</span></li>
+    <li><span class="step-num">2</span><span><span class="step-label">HUNT</span> — Find 5 QR codes hidden around the room</span></li>
+    <li><span class="step-num">3</span><span><span class="step-label">SURVIVE</span> — One shot per question. Answer fast. Don't be the liability.</span></li>
+  </ul>
+  <button class="cta-btn" id="start-btn">SPIN TO START</button>
+  <p class="footer-note">Allow camera access when prompted. Five QR code cards are posted around the room — find and scan them in order.</p>
+</div>
+
+<!-- S2: Spin Wheel -->
+<div id="s2" class="screen">
+  <div class="spin-title">WHAT'S YOUR CRISIS?</div>
+  <canvas id="spin-canvas"></canvas>
+  <div id="spin-result"></div>
+  <button id="activate-btn">ACTIVATE CRISIS MODE</button>
+  <p class="tap-hint">Tap the wheel to spin</p>
+</div>
+
+<!-- S3: QR Hunt -->
+<div id="s3" class="screen">
+  <video id="qr-video" playsinline muted></video>
+  <canvas id="qr-canvas"></canvas>
+  <div id="scan-flash"></div>
+
+  <div id="hud">
+    <div id="hud-top">
+      <div id="level-badge">—</div>
+      <div id="hud-score">0 PTS</div>
+      <div id="hud-timer">60</div>
+    </div>
+  </div>
+
+  <div id="hunt-wrap">
+    <div class="hunt-label">SCAN QR CODE</div>
+    <div class="hunt-qnum-big" id="hunt-qnum-display">#1</div>
+    <div class="hunt-sub">Find the numbered card in the room and point your camera at it</div>
+  </div>
+
+  <div id="wrong-qr-msg">WRONG CODE — FIND QR CODE #1</div>
+
+  <div id="scenario-overlay">
+    <div class="so-pill">YOUR CRISIS</div>
+    <div class="so-title" id="so-level-name"></div>
+    <div class="so-text" id="so-text"></div>
+    <div class="so-countdown" id="so-cd">STARTING IN 5s...</div>
+  </div>
+
+  <div id="fallback">
+    <div class="fb-title">CAMERA UNAVAILABLE — MANUAL MODE<br><span style="font-weight:400;font-size:11px;color:#888">Tap each button in order to answer</span></div>
+    <button class="fb-btn" id="fb-q1">QUESTION 1</button>
+    <button class="fb-btn" id="fb-q2">QUESTION 2</button>
+    <button class="fb-btn" id="fb-q3">QUESTION 3</button>
+    <button class="fb-btn" id="fb-q4">QUESTION 4</button>
+    <button class="fb-btn" id="fb-q5">QUESTION 5</button>
+  </div>
+</div>
+
+<!-- S4: Question Overlay -->
+<div id="s4">
+  <div id="timer-bar-wrap"><div id="timer-bar"></div></div>
+  <div id="speed-bar-wrap"><div id="speed-bar"></div></div>
+  <div id="q-header">
+    CRISIS ALERT — Q<span id="q-num">1</span> OF 5<br>
+    <span id="q-label" style="font-size:10px;letter-spacing:1px;opacity:0.85"></span>
+  </div>
+  <div id="q-content">
+    <div id="q-speed">+50 SPEED BONUS</div>
+    <div id="q-text"></div>
+    <div id="q-options"></div>
+    <div id="q-feedback"></div>
+    <div id="q-fail-msg"></div>
+    <div id="q-next-hint"></div>
+  </div>
+</div>
+
+<!-- S5: Score Reveal -->
+<div id="s5" class="screen">
+  <div class="score-lbl">YOUR FINAL SCORE</div>
+  <div class="score-num" id="score-display">0</div>
+  <div id="correct-count"></div>
+  <div class="stars-row">
+    <div class="star" id="st0"></div>
+    <div class="star" id="st1"></div>
+    <div class="star" id="st2"></div>
+    <div class="star" id="st3"></div>
+    <div class="star" id="st4"></div>
+  </div>
+  <div id="tier-msg"></div>
+  <input type="text" id="name-input" placeholder="Enter your name for the leaderboard" maxlength="20" autocomplete="off">
+  <button id="claim-btn">CLAIM MY SCORE</button>
+  <button id="other-btn">TRY THE OTHER CRISIS</button>
+</div>
+
+<!-- S6: Leaderboard -->
+<div id="s6" class="screen">
+  <div class="lb-title">HALL OF SURVIVAL</div>
+  <table id="lb-table">
+    <thead><tr>
+      <th style="width:28px">#</th>
+      <th>NAME</th>
+      <th style="width:60px">SCORE</th>
+      <th style="width:72px;font-size:9px">LEVEL</th>
+      <th style="width:24px">&#10003;</th>
+    </tr></thead>
+    <tbody id="lb-body"></tbody>
+  </table>
+  <div class="lb-sub">BEAT THIS. IF YOU CAN.</div>
+  <button id="back-btn">BACK TO GAME</button>
+</div>
+
+<script>
+// ============================================================
+// EDIT YOUR GAME CONTENT HERE — NO CODING KNOWLEDGE NEEDED
+// Changing questions, answers, messages, and timers is safe here.
+// Do NOT edit anything below the closing bracket of GAME_CONFIG.
+// ============================================================
+const GAME_CONFIG = {
+  name: "Ready,Set, Reover",
+  tagline: "This isn't just a policy... it's a 'Play'book.",
+  timerDuration: 60,
+  speedBonusThresholds: [10, 20, 30],
+  speedBonusValues: [50, 25, 10, 0],
+  failureMessages: [
+    "Your server just caught fire. Try again!",
+    "The policy doc is weeping right now.",
+    "Bold strategy. Completely wrong, but bold.",
+    "Even the intern knew that one.",
+    "Crisis escalated. Because of you.",
+    "Your RTO just became RIP.",
+    "The Plan Owner has left the building.",
+    "Ashish has revoked your calendar invite."
+  ],
+  tierMessages: {
+    5: "FUTURE LEADER — Ashish has his succession plan!",
+    4: "I KNOW ENOUGH TO BE DANGEROUS — Adhvita is happy",
+    3: "YOUR GUESSWORK NEEDS WORK — Don't try the lottery",
+    2: "LET ME SHOW YOU SOMETHING — where the policy document is",
+    1: "OH NO. Adhvita IS SAD — Very, very sad.",
+    0: "SERVER ON FIRE — Have you tried reading the policy?"
+  },
+  levels: [
+    {
+      name: "THE MUMBAI BLACKOUT",
+      scenarioIntro: "5:30 PM Monday. Cyclone. Mumbai submerged. No power. No internet. No office. Your team has critical financial reporting. RTO: 4 hours. Your phone dies in 90 minutes. The clock is running.",
+      questions: [
+        {
+          label: "WHO OWNS THIS?",
+          text: "The grid is dead and panic is setting in! According to enterprise resiliency policy, who holds the authority to hit the big red BCP activation button?",
+          options: ["The most senior leader who's still reachable", "The Plan Owner", "BCP Team", "Global Safety Ops"],
+          correct: 1
+        },
+        {
+          label: "FIRST CALL?",
+          text: "BCP activated. Word is spreading. Who must be alerted immediately before the rumour mill takes over?",
+          options: ["HR & Facilities at the Mumbai site", "2nd Line of Defence", "Executive Committee", "Operational Risk Management Committee"],
+          correct: 2
+        },
+        {
+          label: "DO YOU HAVE TIME?",
+          text: "Two hours gone. Operations still down. Your colleague says: 'Relax, we have until end of day.' For P0-P4 processes — are they right?",
+          options: ["Yes — P0-P4 have a 72-hour recovery window. Relax.", "No — P0-P4 must recover within 24 hours of disruption.", "72 hours from when Plan Owner formally declares the incident.", "It's a natural disaster — Force Majeure applies. Stand down."],
+          correct: 1
+        },
+        {
+          label: "WHO'S WATCHING?",
+          text: "While you fight fires internally, who is specifically responsible for monitoring the broader threat and escalating if things get worse?",
+          options: ["Priority Incident Response Team", "BCC Teams across the org", "Global Security Ops Teams", "Corporate Services"],
+          correct: 2
+        },
+        {
+          label: "AFTERMATH?",
+          text: "Crisis over. But an app missed RTO, a vendor went dark for 3 hours, and a recovery step failed. What does policy require you to do?",
+          options: ["Tell team leadership what went wrong", "Plan Owner updates the BCP internally", "Document every gap in the Issue Management System", "Delegate the whole mess to the BCC team"],
+          correct: 2
+        }
+      ]
+    },
+    {
+      name: "THE FRIDAY EVACUATION",
+      scenarioIntro: "3:00 PM Friday. Building evacuated. No re-entry for 24 hours. Critical processes cannot wait. Your weekend just became a war room. GO.",
+      questions: [
+        {
+          label: "WHO OWNS THIS?",
+          text: "Sirens blaring, building empty. According to policy, who has the authority and accountability to activate the BCP and make the tough calls?",
+          options: ["Global Security Ops", "The Plan Owner", "BCP Team"],
+          correct: 1
+        },
+        {
+          label: "LEAD IS GONE?",
+          text: "Your primary recovery lead evacuated without their phone. Totally unreachable. What should already be in the plan to handle exactly this?",
+          options: ["Call the 2nd Line of Defence", "Escalate to the Executive Committee", "Activate the alternate recovery team leader named in the plan"],
+          correct: 2
+        },
+        {
+          label: "WHAT'S IN THE PLAN?",
+          text: "Two hours out. Processes halted. Work can only resume at an alternate location. What must your BCP already contain for this exact moment?",
+          options: ["Recovery script with steps to execute the alternate location strategy", "Stakeholder comms explaining activities are paused", "Confirmation the alternate location is accessible within RTO"],
+          correct: 0
+        },
+        {
+          label: "HOW OFTEN?",
+          text: "To make sure this plan doesn't become stale and useless — how often must the BCP be formally reviewed and approved?",
+          options: ["Monthly", "Quarterly", "Annually"],
+          correct: 2
+        },
+        {
+          label: "WHAT NOW?",
+          text: "Dust settled. But a key recovery step failed completely. A 3rd party was unreachable. An app missed RTO. What does policy require of you right now?",
+          options: ["Communicate the gaps to team leadership", "Plan Owner updates the BCP plan internally", "Document every gap in the Issue Management System", "Delegate resolution to the BCC team"],
+          correct: 2
+        }
+      ]
+    }
+  ]
+};
+
+// ─── STATE ─────────────────────────────────────────────────────
+const ST = {
+  level:0, q:0, score:0, correct:0,
+  timeLeft:0, timerID:null,
+  qStart:0, qOpen:false, answered:false,
+  fallback:false, scanning:false, videoStream:null,
+  spinning:false, spinDone:false, spinAngle:0,
+  spinCtx:null, spinSize:0, forcedLevel:-1,
+  newLBTs:null, failIdx:0, gameOver:false,
+  introCd:null, speedRAF:null, lastWrongQR:0
+};
+
+let _video = null, _canvas = null, _ctx = null;
+
+function G(id){ return document.getElementById(id); }
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  G(id).classList.add('active');
+  G('lb-icon').style.display = (id === 's1') ? 'flex' : 'none';
+}
+
+function openS4(){ G('s4').style.display = 'flex'; }
+function closeS4(){ G('s4').style.display = 'none'; }
+
+// ─── EVENTS ────────────────────────────────────────────────────
+G('start-btn').addEventListener('click', goSpin);
+G('lb-icon').addEventListener('click', showLB);
+G('back-btn').addEventListener('click', () => { resetState(); showScreen('s1'); });
+G('activate-btn').addEventListener('click', activateCrisisMode);
+G('claim-btn').addEventListener('click', claimScore);
+G('other-btn').addEventListener('click', tryOtherCrisis);
+
+['fb-q1','fb-q2','fb-q3','fb-q4','fb-q5'].forEach((id, i) => {
+  G(id).addEventListener('click', () => {
+    if(ST.q === i && !ST.qOpen && !ST.gameOver) openQuestion();
+  });
+});
+
+// ─── SPIN ──────────────────────────────────────────────────────
+function goSpin(){
+  resetState();
+  showScreen('s2');
+  initCanvas();
+}
+
+const SEG_ANGLE = Math.PI / 2;
+const WHEEL_COLORS = ['#BB1111','#AA7500','#DD2222','#CC8800'];
+const WHEEL_STROKE = ['#FF4444','#FFB800','#FF4444','#FFB800'];
+
+function initCanvas(){
+  const canvas = G('spin-canvas');
+  const size = Math.min(window.innerWidth * 0.82, window.innerHeight * 0.48, 300);
+  canvas.width = size; canvas.height = size;
+  ST.spinSize = size;
+  ST.spinCtx = canvas.getContext('2d');
+  ST.spinAngle = 0; ST.spinning = false; ST.spinDone = false;
+  G('spin-result').style.display = 'none';
+  G('spin-result').textContent = '';
+  G('activate-btn').style.opacity = '0';
+  G('activate-btn').style.pointerEvents = 'none';
+  drawWheel(0);
+  canvas.addEventListener('click', onCanvasTap, { once: true });
+}
+
+function drawWheel(angle){
+  const ctx = ST.spinCtx, s = ST.spinSize;
+  const cx = s/2, cy = s/2, r = s * 0.44;
+  ctx.clearRect(0, 0, s, s);
+  for(let i = 0; i < 4; i++){
+    const startA = angle + i * SEG_ANGLE - Math.PI/2;
+    ctx.beginPath(); ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, r, startA, startA + SEG_ANGLE);
+    ctx.closePath();
+    ctx.fillStyle = WHEEL_COLORS[i]; ctx.fill();
+    ctx.strokeStyle = WHEEL_STROKE[i]; ctx.lineWidth = 1; ctx.stroke();
+    ctx.save(); ctx.translate(cx, cy); ctx.rotate(startA + SEG_ANGLE / 2);
+    ctx.fillStyle = '#fff';
+    const fs = Math.max(9, s * 0.036);
+    ctx.font = 'bold ' + fs + 'px system-ui';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    const lbl = GAME_CONFIG.levels[i % 2].name;
+    const words = lbl.split(' ');
+    if(words.length <= 2){
+      ctx.fillText(lbl, r * 0.54, 0);
+    } else {
+      const m = Math.ceil(words.length / 2);
+      ctx.fillText(words.slice(0, m).join(' '), r * 0.54, -fs * 0.7);
+      ctx.fillText(words.slice(m).join(' '), r * 0.54, fs * 0.7);
+    }
+    ctx.restore();
+  }
+  ctx.beginPath(); ctx.arc(cx, cy, s * 0.1, 0, Math.PI * 2);
+  ctx.fillStyle = '#0D0D1A'; ctx.fill();
+  ctx.beginPath(); ctx.arc(cx, cy, s * 0.065, 0, Math.PI * 2);
+  ctx.fillStyle = '#FF2D2D'; ctx.fill();
+  ctx.beginPath();
+  ctx.moveTo(cx, cy - r - 2); ctx.lineTo(cx - 11, cy - r + 16); ctx.lineTo(cx + 11, cy - r + 16);
+  ctx.closePath(); ctx.fillStyle = '#FF2D2D'; ctx.fill();
+}
+
+function onCanvasTap(){
+  if(ST.spinning || ST.spinDone) return;
+  const seg = ST.forcedLevel >= 0
+    ? (ST.forcedLevel === 0 ? 0 : 1)
+    : Math.floor(Math.random() * 4);
+  spinTo(seg);
+}
+
+function spinTo(seg){
+  ST.spinning = true;
+  const endBase = -(seg + 0.5) * SEG_ANGLE;
+  const curr = ST.spinAngle;
+  let endAngle = endBase;
+  const minSpin = curr + (5 + Math.random() * 2.5) * Math.PI * 2;
+  while(endAngle < minSpin) endAngle += Math.PI * 2;
+  const delta = endAngle - curr, t0 = performance.now();
+  function frame(now){
+    const t = Math.min((now - t0) / 2500, 1);
+    ST.spinAngle = curr + delta * (1 - Math.pow(1 - t, 3));
+    drawWheel(ST.spinAngle);
+    if(t < 1){ requestAnimationFrame(frame); return; }
+    ST.spinAngle = endAngle; ST.spinning = false; ST.spinDone = true;
+    ST.level = (seg === 0 || seg === 2) ? 0 : 1;
+    onSpinLanded();
+  }
+  requestAnimationFrame(frame);
+}
+
+function onSpinLanded(){
+  const flash = document.createElement('div');
+  flash.style.cssText = 'position:fixed;inset:0;background:#FF2D2D;z-index:9000;opacity:0.75;pointer-events:none;transition:opacity 0.28s';
+  document.body.appendChild(flash);
+  setTimeout(() => { flash.style.opacity = '0'; }, 80);
+  setTimeout(() => { flash.remove(); }, 360);
+  typewriter(G('spin-result'), 'YOUR CRISIS: ' + GAME_CONFIG.levels[ST.level].name, () => {
+    G('activate-btn').style.opacity = '1';
+    G('activate-btn').style.pointerEvents = 'auto';
+  });
+}
+
+function typewriter(el, text, cb){
+  el.style.display = 'block'; el.textContent = '';
+  let i = 0;
+  const iv = setInterval(() => {
+    el.textContent += text[i++];
+    if(i >= text.length){ clearInterval(iv); if(cb) cb(); }
+  }, 38);
+}
+
+// ─── ACTIVATE ──────────────────────────────────────────────────
+async function activateCrisisMode(){
+  G('activate-btn').style.pointerEvents = 'none';
+  const hasCam = await checkCamera();
+  ST.fallback = !hasCam;
+  showScreen('s3');
+  G('level-badge').textContent = GAME_CONFIG.levels[ST.level].name;
+  G('so-level-name').textContent = GAME_CONFIG.levels[ST.level].name;
+  G('so-text').textContent = GAME_CONFIG.levels[ST.level].scenarioIntro;
+  const overlay = G('scenario-overlay');
+  overlay.style.display = 'flex';
+  let cd = 5;
+  G('so-cd').textContent = 'STARTING IN ' + cd + 's...';
+  clearInterval(ST.introCd);
+  ST.introCd = setInterval(() => {
+    cd--;
+    if(cd <= 0){ clearInterval(ST.introCd); overlay.style.display = 'none'; startGameplay(); }
+    else { G('so-cd').textContent = 'STARTING IN ' + cd + 's...'; }
+  }, 1000);
+}
+
+async function checkCamera(){
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return false;
+  try {
+    const s = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+    s.getTracks().forEach(t => t.stop());
+    return true;
+  } catch(e){ return false; }
+}
+
+// ─── GAMEPLAY ──────────────────────────────────────────────────
+function startGameplay(){
+  ST.timeLeft = GAME_CONFIG.timerDuration;
+  ST.q = 0; ST.score = 0; ST.correct = 0; ST.gameOver = false;
+  updateHUD(); updateTimerBar(); updateHuntDisplay();
+  if(ST.fallback){ startFallbackMode(); } else { startQRScan(); }
+  startTimer();
+}
+
+// ─── QR SCANNING ───────────────────────────────────────────────
+function startQRScan(){
+  G('fallback').style.display = 'none';
+  _video = G('qr-video');
+  _canvas = G('qr-canvas');
+  _ctx = _canvas.getContext('2d');
+  navigator.mediaDevices.getUserMedia({
+    video: { facingMode: 'environment', width: { ideal: 640 }, height: { ideal: 480 } }
+  }).then(stream => {
+    ST.videoStream = stream;
+    _video.srcObject = stream;
+    _video.play().then(() => {
+      _canvas.width = _video.videoWidth || 640;
+      _canvas.height = _video.videoHeight || 480;
+      ST.scanning = true;
+      scanLoop();
+    }).catch(fallbackTrigger);
+  }).catch(fallbackTrigger);
+}
+
+function fallbackTrigger(){ ST.fallback = true; ST.scanning = false; startFallbackMode(); }
+
+function scanLoop(){
+  if(!ST.scanning || ST.qOpen || ST.gameOver) return;
+  if(_video && _video.readyState >= _video.HAVE_ENOUGH_DATA){
+    _ctx.drawImage(_video, 0, 0, _canvas.width, _canvas.height);
+    const img = _ctx.getImageData(0, 0, _canvas.width, _canvas.height);
+    if(typeof jsQR !== 'undefined'){
+      const code = jsQR(img.data, img.width, img.height, { inversionAttempts: 'attemptBoth' });
+      if(code) handleQRDetection(code.data);
+    }
+  }
+  requestAnimationFrame(scanLoop);
+}
+
+function handleQRDetection(data){
+  const match = data.match(/^CRISIS-Q([1-5])$/);
+  if(!match) return;
+  const qNum = parseInt(match[1]);
+  const expected = ST.q + 1;
+  if(qNum === expected){
+    ST.scanning = false;
+    flashScan(() => openQuestion());
+  } else {
+    showWrongQR(expected);
+  }
+}
+
+function flashScan(cb){
+  const f = G('scan-flash');
+  f.style.opacity = '1';
+  setTimeout(() => { f.style.opacity = '0'; }, 200);
+  setTimeout(cb, 420);
+}
+
+function showWrongQR(expected){
+  const now = Date.now();
+  if(now - ST.lastWrongQR < 2500) return;
+  ST.lastWrongQR = now;
+  const msg = G('wrong-qr-msg');
+  msg.textContent = 'WRONG CODE! SCAN QR CODE #' + expected;
+  msg.style.opacity = '1';
+  setTimeout(() => { msg.style.opacity = '0'; }, 2000);
+}
+
+function stopQRScan(){
+  ST.scanning = false;
+  if(ST.videoStream){ ST.videoStream.getTracks().forEach(t => t.stop()); ST.videoStream = null; }
+  if(_video){ _video.srcObject = null; }
+}
+
+function startFallbackMode(){
+  G('fallback').style.display = 'flex';
+  updateFBButtons();
+}
+
+function updateFBButtons(){
+  ['fb-q1','fb-q2','fb-q3','fb-q4','fb-q5'].forEach((id, i) => {
+    const btn = G(id);
+    const active = i === ST.q && !ST.gameOver;
+    btn.style.opacity = active ? '1' : '0.22';
+    btn.style.pointerEvents = active ? 'auto' : 'none';
+  });
+}
+
+// ─── TIMER ─────────────────────────────────────────────────────
+function startTimer(){
+  clearInterval(ST.timerID);
+  ST.timerID = setInterval(() => {
+    if(ST.gameOver) return;
+    ST.timeLeft = Math.max(0, ST.timeLeft - 1);
+    updateTimerDisplay(); updateTimerBar();
+    if(ST.timeLeft <= 0){ clearInterval(ST.timerID); endGame(); }
+  }, 1000);
+}
+
+function updateTimerDisplay(){
+  const el = G('hud-timer');
+  el.textContent = ST.timeLeft;
+  el.className = ST.timeLeft <= 15 ? 't-red' : ST.timeLeft <= 30 ? 't-amber' : '';
+}
+
+function updateTimerBar(){
+  G('timer-bar').style.transform = 'scaleX(' + (ST.timeLeft / GAME_CONFIG.timerDuration) + ')';
+}
+
+function updateHuntDisplay(){ G('hunt-qnum-display').textContent = '#' + (ST.q + 1); }
+function updateHUD(){ G('hud-score').textContent = ST.score + ' PTS'; G('level-badge').textContent = GAME_CONFIG.levels[ST.level].name; }
+
+// ─── SPEED BONUS — real-time rAF countdown bar ─────────────────
+// The speed bonus is measured from the moment the QR code is scanned
+// to when the player taps an answer. The coloured bar and label update
+// at 60fps so players can see exactly which tier they're racing against.
+function getSpeedBonus(){
+  if(!ST.qOpen) return GAME_CONFIG.speedBonusValues[0];
+  const elapsed = (Date.now() - ST.qStart) / 1000;
+  const t = GAME_CONFIG.speedBonusThresholds, v = GAME_CONFIG.speedBonusValues;
+  if(elapsed <= t[0]) return v[0];
+  if(elapsed <= t[1]) return v[1];
+  if(elapsed <= t[2]) return v[2];
+  return v[3];
+}
+
+function startSpeedDisplay(){
+  stopSpeedDisplay();
+  (function loop(){
+    if(!ST.qOpen){ ST.speedRAF = null; return; }
+    const elapsed = (Date.now() - ST.qStart) / 1000;
+    let label, pct, color;
+    if(elapsed < 10){
+      pct = 1 - elapsed / 10;
+      label = '+50 SPEED BONUS — ' + Math.ceil(10 - elapsed) + 's LEFT';
+      color = '#4CAF50';
+    } else if(elapsed < 20){
+      pct = 1 - (elapsed - 10) / 10;
+      label = '+25 SPEED BONUS — ' + Math.ceil(20 - elapsed) + 's LEFT';
+      color = '#FFB800';
+    } else if(elapsed < 30){
+      pct = 1 - (elapsed - 20) / 10;
+      label = '+10 SPEED BONUS — ' + Math.ceil(30 - elapsed) + 's LEFT';
+      color = '#FF2D2D';
+    } else {
+      pct = 0; label = 'SPEED BONUS GONE — ANSWER NOW!'; color = '#FF2D2D';
+    }
+    G('q-speed').textContent = label;
+    const bar = G('speed-bar');
+    bar.style.transform = 'scaleX(' + pct + ')';
+    bar.style.background = color;
+    ST.speedRAF = requestAnimationFrame(loop);
+  })();
+}
+
+function stopSpeedDisplay(){
+  if(ST.speedRAF){ cancelAnimationFrame(ST.speedRAF); ST.speedRAF = null; }
+}
+
+// ─── QUESTION ──────────────────────────────────────────────────
+function openQuestion(){
+  if(ST.qOpen || ST.q >= 5 || ST.gameOver) return;
+  ST.qOpen = true; ST.answered = false;
+  const qd = GAME_CONFIG.levels[ST.level].questions[ST.q];
+  G('q-num').textContent = ST.q + 1;
+  G('q-label').textContent = qd.label;
+  G('q-text').textContent = qd.text;
+  G('q-feedback').textContent = '';
+  G('q-fail-msg').textContent = '';
+  G('q-next-hint').textContent = '';
+  const opts = G('q-options');
+  opts.innerHTML = '';
+  qd.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.textContent = String.fromCharCode(65 + i) + ': ' + opt;
+    btn.addEventListener('click', () => submitAnswer(i, btn));
+    opts.appendChild(btn);
+  });
+  G('speed-bar').style.transform = 'scaleX(1)';
+  G('speed-bar').style.background = '#4CAF50';
+  ST.qStart = Date.now();
+  openS4();
+  startSpeedDisplay();
+}
+
+// ONE ATTEMPT ONLY — correct or wrong, closes after 2.2 s
+function submitAnswer(idx, btn){
+  if(ST.answered) return;
+  ST.answered = true;
+  stopSpeedDisplay();
+
+  const qd = GAME_CONFIG.levels[ST.level].questions[ST.q];
+  const allBtns = G('q-options').querySelectorAll('.opt-btn');
+  allBtns.forEach(b => { b.disabled = true; b.classList.add('dim'); });
+
+  const isLast = (ST.q === 4);
+  const nextHint = isLast ? 'CALCULATING YOUR SCORE...' : 'NEXT → FIND QR CODE #' + (ST.q + 2);
+
+  if(idx === qd.correct){
+    const pts = 100 + getSpeedBonus();
+    ST.score += pts; ST.correct++;
+    btn.classList.remove('dim'); btn.classList.add('correct');
+    G('q-feedback').textContent = '+' + pts + ' PTS — CRISIS AVERTED!';
+    G('q-fail-msg').textContent = '';
+    G('q-next-hint').textContent = nextHint;
+    updateHUD();
+  } else {
+    allBtns[qd.correct].classList.remove('dim');
+    allBtns[qd.correct].classList.add('correct');
+    btn.classList.remove('dim'); btn.classList.add('wrong-final');
+    G('q-fail-msg').textContent = GAME_CONFIG.failureMessages[ST.failIdx % GAME_CONFIG.failureMessages.length];
+    ST.failIdx++;
+    G('q-feedback').textContent = '+0 PTS';
+    G('q-next-hint').textContent = nextHint;
+  }
+
+  setTimeout(() => { closeS4(); ST.qOpen = false; advanceQuestion(); }, 2200);
+}
+
+function advanceQuestion(){
+  if(ST.gameOver) return;
+  ST.answered = false; ST.q++;
+  if(ST.q >= 5){ endGame(); return; }
+  updateHuntDisplay();
+  if(!ST.fallback){ ST.scanning = true; scanLoop(); }
+  else { updateFBButtons(); }
+}
+
+function endGame(){
+  if(ST.gameOver) return;
+  ST.gameOver = true;
+  clearInterval(ST.timerID);
+  stopQRScan(); stopSpeedDisplay(); closeS4();
+  showScoreScreen();
+}
+
+// ─── SCORE SCREEN ──────────────────────────────────────────────
+function showScoreScreen(){
+  showScreen('s5');
+  const target = ST.score;
+  G('score-display').textContent = target;
+  if(target > 0){
+    let displayed = 0;
+    G('score-display').textContent = '0';
+    const step = Math.max(1, Math.ceil(target / 40));
+    const iv = setInterval(() => {
+      displayed = Math.min(displayed + step, target);
+      G('score-display').textContent = displayed;
+      if(displayed >= target) clearInterval(iv);
+    }, 22);
+  }
+  G('correct-count').textContent = ST.correct + ' / 5 CORRECT';
+  const starsCount = Math.round((ST.correct / 5) * 5);
+  for(let i = 0; i < 5; i++){
+    const el = G('st' + i);
+    el.className = 'star';
+    if(i < starsCount) setTimeout(() => el.classList.add('lit'), 350 + i * 160);
+  }
+  G('tier-msg').textContent = GAME_CONFIG.tierMessages[ST.correct] || '';
+  G('name-input').value = '';
+}
+
+// ─── LEADERBOARD ───────────────────────────────────────────────
+function claimScore(){
+  const raw = G('name-input').value.trim();
+  const name = raw.length ? raw.substring(0, 20) : 'Anonymous';
+  const entry = { name, score: ST.score, level: GAME_CONFIG.levels[ST.level].name, correct: ST.correct, ts: Date.now() };
+  ST.newLBTs = entry.ts;
+  const lb = loadLB();
+  lb.push(entry); lb.sort((a, b) => b.score - a.score);
+  saveLB(lb.slice(0, 10)); showLB();
+}
+
+function tryOtherCrisis(){ const other = 1 - ST.level; goSpin(); ST.forcedLevel = other; }
+
+function loadLB(){
+  try { return JSON.parse(localStorage.getItem('crisismode_leaderboard')) || []; } catch(e){ return []; }
+}
+function saveLB(lb){ localStorage.setItem('crisismode_leaderboard', JSON.stringify(lb)); }
+function showLB(){ renderLB(); showScreen('s6'); }
+
+function renderLB(){
+  const lb = loadLB(), tbody = G('lb-body');
+  tbody.innerHTML = '';
+  if(!lb.length){
+    const tr = document.createElement('tr');
+    const td = document.createElement('td');
+    td.colSpan = 5; td.style.cssText = 'text-align:center;color:#555;padding:20px;font-size:12px;';
+    td.textContent = 'No scores yet. Be the first!';
+    tr.appendChild(td); tbody.appendChild(tr); return;
+  }
+  lb.forEach((e, i) => {
+    const tr = document.createElement('tr');
+    if(i === 0) tr.className = 'lb-rank1';
+    if(e.ts === ST.newLBTs) tr.classList.add('lb-new');
+    const lvlShort = e.level.length > 9 ? e.level.substring(0, 8) + '\u2026' : e.level;
+    tr.innerHTML =
+      '<td style="font-weight:700;color:' + (i===0?'#FFB800':'#888') + '">' + (i+1) + '</td>' +
+      '<td style="font-weight:600">' + e.name + '</td>' +
+      '<td style="color:#FF2D2D;font-weight:700">' + e.score + '</td>' +
+      '<td style="font-size:10px;color:#666">' + lvlShort + '</td>' +
+      '<td style="color:#4CAF50;font-weight:700">' + e.correct + '</td>';
+    tbody.appendChild(tr);
+  });
+}
+
+// ─── RESET ─────────────────────────────────────────────────────
+function resetState(){
+  clearInterval(ST.timerID); clearInterval(ST.introCd);
+  stopQRScan(); stopSpeedDisplay();
+  ST.level=0; ST.q=0; ST.score=0; ST.correct=0;
+  ST.timeLeft=0; ST.timerID=null; ST.introCd=null;
+  ST.qStart=0; ST.qOpen=false; ST.answered=false;
+  ST.fallback=false; ST.scanning=false;
+  ST.spinning=false; ST.spinDone=false; ST.spinAngle=0;
+  ST.forcedLevel=-1; ST.newLBTs=null; ST.failIdx=0;
+  ST.gameOver=false; ST.lastWrongQR=0; ST.speedRAF=null;
+  closeS4();
+  G('fallback').style.display = 'none';
+  G('scenario-overlay').style.display = 'none';
+  G('wrong-qr-msg').style.opacity = '0';
+  G('scan-flash').style.opacity = '0';
+  G('hud-timer').className = '';
+  G('hud-timer').textContent = GAME_CONFIG.timerDuration;
+  G('hud-score').textContent = '0 PTS';
+  G('timer-bar').style.transform = 'scaleX(1)';
+  G('speed-bar').style.transform = 'scaleX(1)';
+  G('speed-bar').style.background = '#4CAF50';
+  G('hunt-qnum-display').textContent = '#1';
+}
+
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('./sw.js').catch(() => {});
+}
+</script>
+</body>
+</html>
