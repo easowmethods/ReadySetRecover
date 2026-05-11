@@ -1,6 +1,6 @@
 // Bump version any time you change game files — this forces
 // all players' browsers to discard the old cache and re-download.
-const CACHE = 'crisismode-v2';
+const CACHE = 'crisismode-v3';
 
 // Everything here is downloaded and cached on the very first page
 // load, so the game runs fully offline from that point onwards.
