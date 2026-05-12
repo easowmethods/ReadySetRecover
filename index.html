@@ -20,26 +20,26 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0D0D1A;color:#fff;f
 .logo-wrap{text-align:center;margin-bottom:14px;animation:slide-down 0.3s ease-out both}
 .logo-title{display:inline-block;font-size:clamp(28px,9vw,52px);font-weight:900;color:#FF2D2D;letter-spacing:6px;line-height:1;border:3px solid #FF2D2D;padding:8px 18px;animation:pulse-border 2.2s ease-in-out infinite}
 .logo-sub{font-size:clamp(16px,5vw,26px);font-weight:700;color:#FFB800;letter-spacing:3px;margin-top:8px;animation:blink 1s step-end infinite}
-.tagline{font-style:italic;color:#aaa;font-size:13px;text-align:center;margin-bottom:18px;line-height:1.5;animation:fade-in 0.4s 0.35s both}
+.tagline{font-style:italic;color:#aaa;font-size:15px;text-align:center;margin-bottom:18px;line-height:1.5;animation:fade-in 0.4s 0.35s both}
 .steps{list-style:none;width:100%;max-width:360px;margin-bottom:22px}
-.steps li{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,45,45,0.18);font-size:12px;color:#ccc;line-height:1.4}
+.steps li{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,45,45,0.18);font-size:14px;color:#ccc;line-height:1.4}
 .steps li:nth-child(1){animation:stagger-in 0.3s 0.45s both}
 .steps li:nth-child(2){animation:stagger-in 0.3s 0.56s both}
 .steps li:nth-child(3){animation:stagger-in 0.3s 0.67s both}
-.step-num{min-width:22px;height:22px;border:2px solid #FF2D2D;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#FF2D2D;margin-top:1px}
+.step-num{min-width:22px;height:22px;border:2px solid #FF2D2D;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#FF2D2D;margin-top:1px}
 .step-label{color:#fff;font-weight:700}
-.cta-btn{background:#FF2D2D;color:#fff;border:none;padding:16px 40px;font-size:16px;font-weight:700;letter-spacing:3px;cursor:pointer;border-radius:3px;animation:stagger-in 0.3s 0.85s both,pulse-btn 2s 1.6s ease-in-out infinite}
-.footer-note{font-size:11px;color:#666;text-align:center;margin-top:14px;max-width:300px;line-height:1.6}
+.cta-btn{background:#FF2D2D;color:#fff;border:none;padding:16px 40px;font-size:18px;font-weight:700;letter-spacing:3px;cursor:pointer;border-radius:3px;animation:stagger-in 0.3s 0.85s both,pulse-btn 2s 1.6s ease-in-out infinite}
+.footer-note{font-size:13px;color:#666;text-align:center;margin-top:14px;max-width:300px;line-height:1.6}
 #lb-icon{position:fixed;top:14px;right:14px;cursor:pointer;display:flex;flex-direction:column;gap:5px;z-index:1001;padding:6px}
 #lb-icon span{display:block;width:22px;height:2px;background:#FFB800;border-radius:2px}
 
 /* S2 */
 #s2{padding:24px;z-index:1000}
-.spin-title{font-size:17px;font-weight:900;color:#FF2D2D;letter-spacing:3px;margin-bottom:18px;text-align:center;animation:pulse-border 1.6s ease-in-out infinite}
+.spin-title{font-size:19px;font-weight:900;color:#FF2D2D;letter-spacing:3px;margin-bottom:18px;text-align:center;animation:pulse-border 1.6s ease-in-out infinite}
 #spin-canvas{border-radius:50%;display:block;cursor:pointer;touch-action:none}
-#spin-result{display:none;text-align:center;margin-top:16px;font-size:14px;font-weight:700;color:#FFB800;letter-spacing:2px;min-height:20px}
-#activate-btn{margin-top:16px;opacity:0;pointer-events:none;background:#FF2D2D;color:#fff;border:none;padding:16px 32px;font-size:15px;font-weight:700;letter-spacing:2px;cursor:pointer;border-radius:3px;transition:opacity 0.4s}
-.tap-hint{font-size:11px;color:#666;margin-top:10px}
+#spin-result{display:none;text-align:center;margin-top:16px;font-size:16px;font-weight:700;color:#FFB800;letter-spacing:2px;min-height:20px}
+#activate-btn{margin-top:16px;opacity:0;pointer-events:none;background:#FF2D2D;color:#fff;border:none;padding:16px 32px;font-size:17px;font-weight:700;letter-spacing:2px;cursor:pointer;border-radius:3px;transition:opacity 0.4s}
+.tap-hint{font-size:13px;color:#666;margin-top:10px}
 
 /* S3 — QR Hunt */
 #s3{position:fixed;inset:0;background:#000;z-index:1000;overflow:hidden}
@@ -48,24 +48,24 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0D0D1A;color:#fff;f
 #scan-flash{position:absolute;inset:0;z-index:50;opacity:0;border:8px solid #4CAF50;pointer-events:none;transition:opacity 0.25s}
 #hud{position:absolute;top:0;left:0;right:0;z-index:100;pointer-events:none}
 #hud-top{display:flex;align-items:center;gap:8px;padding:10px 12px;background:rgba(0,0,0,0.75)}
-#level-badge{background:#FF2D2D;color:#fff;font-size:10px;font-weight:700;padding:3px 9px;border-radius:10px;letter-spacing:1px;max-width:130px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:0}
-#hud-score{color:#fff;font-size:13px;font-weight:700;margin-left:auto;flex-shrink:0}
+#level-badge{background:#FF2D2D;color:#fff;font-size:12px;font-weight:700;padding:3px 9px;border-radius:10px;letter-spacing:1px;max-width:130px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:0}
+#hud-score{color:#fff;font-size:15px;font-weight:700;margin-left:auto;flex-shrink:0}
 #hud-timer{color:#4CAF50;font-size:22px;font-weight:900;flex-shrink:0;margin-left:10px;min-width:32px;text-align:right;transition:color 0.5s}
 #hud-timer.t-amber{color:#FFB800}
 #hud-timer.t-red{color:#FF2D2D}
 #hunt-wrap{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:110;pointer-events:none}
-.hunt-label{font-size:13px;font-weight:700;color:#fff;letter-spacing:4px;text-align:center;opacity:0.9}
+.hunt-label{font-size:15px;font-weight:700;color:#fff;letter-spacing:4px;text-align:center;opacity:0.9}
 .hunt-qnum-big{font-size:clamp(80px,24vw,120px);font-weight:900;color:#FF2D2D;line-height:1;animation:pulse-border 1.2s ease-in-out infinite}
-.hunt-sub{font-size:11px;color:#ccc;margin-top:8px;text-align:center;max-width:220px;line-height:1.6;background:rgba(0,0,0,0.55);padding:6px 14px;border-radius:3px}
-#wrong-qr-msg{position:absolute;bottom:80px;left:20px;right:20px;background:rgba(255,45,45,0.95);color:#fff;padding:13px 16px;border-radius:3px;text-align:center;font-weight:700;font-size:12px;z-index:120;opacity:0;pointer-events:none;transition:opacity 0.3s;letter-spacing:1px}
+.hunt-sub{font-size:13px;color:#ccc;margin-top:8px;text-align:center;max-width:220px;line-height:1.6;background:rgba(0,0,0,0.55);padding:6px 14px;border-radius:3px}
+#wrong-qr-msg{position:absolute;bottom:80px;left:20px;right:20px;background:rgba(255,45,45,0.95);color:#fff;padding:13px 16px;border-radius:3px;text-align:center;font-weight:700;font-size:14px;z-index:120;opacity:0;pointer-events:none;transition:opacity 0.3s;letter-spacing:1px}
 #scenario-overlay{position:absolute;inset:0;background:#0D0D1A;z-index:200;display:none;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center}
-.so-pill{font-size:10px;color:#FF2D2D;letter-spacing:3px;font-weight:700;border:1px solid #FF2D2D;display:inline-block;padding:3px 10px;border-radius:10px;margin-bottom:14px;animation:pulse-border 1.5s infinite}
+.so-pill{font-size:12px;color:#FF2D2D;letter-spacing:3px;font-weight:700;border:1px solid #FF2D2D;display:inline-block;padding:3px 10px;border-radius:10px;margin-bottom:14px;animation:pulse-border 1.5s infinite}
 .so-title{font-size:20px;font-weight:900;color:#fff;letter-spacing:2px;margin-bottom:18px}
-.so-text{font-size:13px;color:#ccc;line-height:1.8;max-width:340px}
-.so-countdown{font-size:11px;color:#666;margin-top:20px;letter-spacing:2px}
+.so-text{font-size:15px;color:#ccc;line-height:1.8;max-width:340px}
+.so-countdown{font-size:13px;color:#666;margin-top:20px;letter-spacing:2px}
 #fallback{position:absolute;inset:0;background:#0D0D1A;z-index:210;display:none;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:10px}
-.fb-title{font-size:13px;color:#FFB800;font-weight:700;margin-bottom:6px;text-align:center;letter-spacing:1px}
-.fb-btn{background:transparent;border:2px solid #FF2D2D;color:#fff;padding:15px;font-size:14px;font-weight:700;cursor:pointer;width:100%;max-width:300px;border-radius:3px;letter-spacing:1px;transition:opacity 0.2s}
+.fb-title{font-size:15px;color:#FFB800;font-weight:700;margin-bottom:6px;text-align:center;letter-spacing:1px}
+.fb-btn{background:transparent;border:2px solid #FF2D2D;color:#fff;padding:15px;font-size:16px;font-weight:700;cursor:pointer;width:100%;max-width:300px;border-radius:3px;letter-spacing:1px;transition:opacity 0.2s}
 
 /* S4 — Question Overlay */
 #s4{position:fixed;inset:0;background:rgba(8,8,18,0.97);z-index:5000;display:none;flex-direction:column}
@@ -73,46 +73,61 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0D0D1A;color:#fff;f
 #timer-bar{height:3px;background:#FF2D2D;transform-origin:left;transition:transform 1s linear}
 #speed-bar-wrap{width:100%;height:7px;background:#111;flex-shrink:0}
 #speed-bar{height:7px;background:#4CAF50;transform-origin:left;transform:scaleX(1)}
-#q-header{background:#FF2D2D;padding:10px 16px;font-size:11px;font-weight:700;letter-spacing:2px;text-align:center;flex-shrink:0;line-height:1.6}
+#q-header{background:#FF2D2D;padding:10px 16px;font-size:13px;font-weight:700;letter-spacing:2px;text-align:center;flex-shrink:0;line-height:1.6}
 #q-content{flex:1;padding:18px 16px;display:flex;flex-direction:column;overflow-y:auto;gap:10px}
-#q-speed{font-size:11px;color:#FFB800;font-weight:700;text-align:center;letter-spacing:0.5px;min-height:16px}
-#q-text{font-size:15px;font-weight:700;color:#fff;line-height:1.5}
+#q-speed{font-size:13px;color:#FFB800;font-weight:700;text-align:center;letter-spacing:0.5px;min-height:16px}
+#q-text{font-size:17px;font-weight:700;color:#fff;line-height:1.55}
 #q-options{display:flex;flex-direction:column;gap:8px;margin-top:4px}
-.opt-btn{background:#0d0d1a;border:2px solid rgba(255,45,45,0.5);color:#fff;padding:14px 12px;font-size:13px;text-align:left;cursor:pointer;border-radius:3px;line-height:1.4;transition:border-color 0.15s}
+.opt-btn{background:#0d0d1a;border:2px solid rgba(255,45,45,0.5);color:#fff;padding:14px 12px;font-size:15px;text-align:left;cursor:pointer;border-radius:3px;line-height:1.45;transition:border-color 0.15s}
 .opt-btn:active{border-color:#FF2D2D}
 .opt-btn.correct{background:rgba(76,175,80,0.15);border-color:#4CAF50;animation:correct-flash 0.2s ease-out}
 .opt-btn.wrong-final{border-color:#FF2D2D;background:rgba(255,45,45,0.08);animation:shake-anim 0.35s both}
 .opt-btn.dim{opacity:0.3;pointer-events:none}
-#q-feedback{text-align:center;font-size:14px;font-weight:700;color:#4CAF50;min-height:20px;letter-spacing:1px}
-#q-fail-msg{text-align:center;font-size:12px;color:#FF2D2D;min-height:18px;line-height:1.4}
-#q-next-hint{text-align:center;font-size:11px;color:#666;letter-spacing:2px;min-height:16px}
+#q-feedback{text-align:center;font-size:16px;font-weight:700;color:#4CAF50;min-height:20px;letter-spacing:1px}
+#q-fail-msg{text-align:center;font-size:14px;color:#FF2D2D;min-height:18px;line-height:1.4}
+#q-next-hint{text-align:center;font-size:13px;color:#666;letter-spacing:2px;min-height:16px}
+#q-explanation{flex-shrink:0;padding:0;background:rgba(10,10,22,0.98);border-top:3px solid transparent;display:none;flex-direction:column;gap:0}
+#q-explanation.exp-correct{border-top-color:#4CAF50}
+#q-explanation.exp-wrong{border-top-color:#FF2D2D}
+#q-exp-result{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 12px;gap:10px}
+#q-exp-verdict{font-size:17px;font-weight:900;letter-spacing:2px;display:flex;align-items:center;gap:8px}
+.exp-correct #q-exp-verdict{color:#4CAF50}
+.exp-wrong   #q-exp-verdict{color:#FF2D2D}
+#q-exp-pts{font-size:15px;font-weight:700;letter-spacing:1px}
+.exp-correct #q-exp-pts{color:#4CAF50}
+.exp-wrong   #q-exp-pts{color:#FF2D2D}
+#q-exp-divider{height:1px;background:rgba(255,255,255,0.07);margin:0 16px}
+#q-exp-body{padding:14px 16px 0;display:flex;flex-direction:column;gap:12px}
+#q-exp-label{font-size:11px;font-weight:700;color:#FFB800;letter-spacing:3px;opacity:0.8}
+#q-exp-text{font-size:15px;color:#ccc;line-height:1.8;padding-bottom:4px}
+#q-gotit-btn{background:#FFB800;color:#0D0D1A;border:none;padding:16px 16px 18px;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:2px;width:100%;flex-shrink:0;animation:pulse-btn 1.8s ease-in-out infinite;margin-top:14px}
 
 /* S5 */
 #s5{padding:28px 24px;text-align:center;gap:4px;z-index:1000}
-.score-lbl{font-size:10px;color:#666;letter-spacing:3px;margin-bottom:2px}
+.score-lbl{font-size:12px;color:#666;letter-spacing:3px;margin-bottom:2px}
 .score-num{font-size:clamp(56px,16vw,80px);font-weight:900;color:#FF2D2D;line-height:1}
-#correct-count{font-size:12px;color:#888;margin-top:2px;letter-spacing:1px}
+#correct-count{font-size:14px;color:#888;margin-top:2px;letter-spacing:1px}
 .stars-row{display:flex;gap:6px;justify-content:center;margin:12px 0 8px}
 .star{width:30px;height:30px;background:#222;clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);transition:transform 0.25s}
 .star.lit{background:#FFB800;transform:scale(1.15)}
-#tier-msg{font-size:12px;color:#FFB800;font-weight:700;letter-spacing:1px;line-height:1.5;padding:0 16px;min-height:36px;text-align:center}
-#name-input{background:#0d0d1a;border:2px solid rgba(255,45,45,0.6);color:#fff;padding:13px;font-size:15px;text-align:center;border-radius:3px;width:100%;max-width:300px;margin-top:8px;font-family:inherit}
+#tier-msg{font-size:14px;color:#FFB800;font-weight:700;letter-spacing:1px;line-height:1.5;padding:0 16px;min-height:36px;text-align:center}
+#name-input{background:#0d0d1a;border:2px solid rgba(255,45,45,0.6);color:#fff;padding:13px;font-size:16px;text-align:center;border-radius:3px;width:100%;max-width:300px;margin-top:8px;font-family:inherit}
 #name-input::placeholder{color:#444}
 #name-input:focus{border-color:#FF2D2D}
-#claim-btn{background:#FF2D2D;color:#fff;border:none;padding:15px 32px;font-size:14px;font-weight:700;cursor:pointer;border-radius:3px;letter-spacing:2px;width:100%;max-width:300px;margin-top:8px}
-#other-btn{background:transparent;border:2px solid #FFB800;color:#FFB800;padding:13px;font-size:13px;font-weight:700;cursor:pointer;border-radius:3px;width:100%;max-width:300px;margin-top:4px;letter-spacing:1px}
+#claim-btn{background:#FF2D2D;color:#fff;border:none;padding:15px 32px;font-size:16px;font-weight:700;cursor:pointer;border-radius:3px;letter-spacing:2px;width:100%;max-width:300px;margin-top:8px}
+#other-btn{background:transparent;border:2px solid #FFB800;color:#FFB800;padding:13px;font-size:15px;font-weight:700;cursor:pointer;border-radius:3px;width:100%;max-width:300px;margin-top:4px;letter-spacing:1px}
 
 /* S6 */
 #s6{padding:24px;z-index:1000;justify-content:flex-start;padding-top:36px;overflow-y:auto}
 .lb-title{font-size:24px;font-weight:900;color:#FF2D2D;letter-spacing:4px;margin-bottom:18px;text-align:center;width:100%}
 #lb-table{width:100%;max-width:400px;border-collapse:collapse}
-#lb-table th{font-size:10px;color:#666;text-align:left;padding:6px 4px;border-bottom:1px solid #222;letter-spacing:1px}
-#lb-table td{padding:10px 4px;font-size:12px;border-bottom:1px solid rgba(255,255,255,0.04);vertical-align:middle}
+#lb-table th{font-size:12px;color:#666;text-align:left;padding:6px 4px;border-bottom:1px solid #222;letter-spacing:1px}
+#lb-table td{padding:10px 4px;font-size:14px;border-bottom:1px solid rgba(255,255,255,0.04);vertical-align:middle}
 .lb-rank1 td{background:rgba(255,184,0,0.08)}
 .lb-rank1 td:first-child{color:#FFB800;font-weight:900}
 .lb-new{animation:lb-new-pop 0.5s ease-out}
-.lb-sub{font-size:11px;color:#555;text-align:center;margin-top:14px;letter-spacing:2px;width:100%}
-#back-btn{margin-top:18px;background:transparent;border:2px solid #FF2D2D;color:#FF2D2D;padding:12px 28px;font-size:13px;font-weight:700;cursor:pointer;border-radius:3px;letter-spacing:2px}
+.lb-sub{font-size:13px;color:#555;text-align:center;margin-top:14px;letter-spacing:2px;width:100%}
+#back-btn{margin-top:18px;background:transparent;border:2px solid #FF2D2D;color:#FF2D2D;padding:12px 28px;font-size:15px;font-weight:700;cursor:pointer;border-radius:3px;letter-spacing:2px}
 
 @keyframes pulse-border{0%,100%{opacity:1}50%{opacity:0.55}}
 @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
@@ -138,7 +153,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0D0D1A;color:#fff;f
   <ul class="steps">
     <li><span class="step-num">1</span><span><span class="step-label">SPIN</span> — Draw your crisis scenario</span></li>
     <li><span class="step-num">2</span><span><span class="step-label">HUNT</span> — Find 5 QR codes hidden around the room</span></li>
-    <li><span class="step-num">3</span><span><span class="step-label">SURVIVE</span> — One shot per question. Answer fast. Don't be the liability.</span></li>
+    <li><span class="step-num">3</span><span><span class="step-label">SURVIVE</span> — One shot per question. Answer fast. Don't be the weakest link.</span></li>
   </ul>
   <button class="cta-btn" id="start-btn">SPIN TO START</button>
   <p class="footer-note">Allow camera access when prompted. Five QR code cards are posted around the room — find and scan them in order.</p>
@@ -183,7 +198,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0D0D1A;color:#fff;f
   </div>
 
   <div id="fallback">
-    <div class="fb-title">CAMERA UNAVAILABLE — MANUAL MODE<br><span style="font-weight:400;font-size:11px;color:#888">Tap each button in order to answer</span></div>
+    <div class="fb-title">CAMERA UNAVAILABLE — MANUAL MODE<br><span style="font-weight:400;font-size:13px;color:#888">Tap each button in order to answer</span></div>
     <button class="fb-btn" id="fb-q1">QUESTION 1</button>
     <button class="fb-btn" id="fb-q2">QUESTION 2</button>
     <button class="fb-btn" id="fb-q3">QUESTION 3</button>
@@ -198,7 +213,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0D0D1A;color:#fff;f
   <div id="speed-bar-wrap"><div id="speed-bar"></div></div>
   <div id="q-header">
     CRISIS ALERT — Q<span id="q-num">1</span> OF 5<br>
-    <span id="q-label" style="font-size:10px;letter-spacing:1px;opacity:0.85"></span>
+    <span id="q-label" style="font-size:12px;letter-spacing:1px;opacity:0.85"></span>
   </div>
   <div id="q-content">
     <div id="q-speed">+50 SPEED BONUS</div>
@@ -207,6 +222,20 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0D0D1A;color:#fff;f
     <div id="q-feedback"></div>
     <div id="q-fail-msg"></div>
     <div id="q-next-hint"></div>
+  </div>
+  <div id="q-explanation">
+    <!-- Result row: verdict icon + label + points earned -->
+    <div id="q-exp-result">
+      <div id="q-exp-verdict"></div>
+      <div id="q-exp-pts"></div>
+    </div>
+    <div id="q-exp-divider"></div>
+    <!-- Explanation body -->
+    <div id="q-exp-body">
+      <div id="q-exp-label">POLICY BRIEF</div>
+      <div id="q-exp-text"></div>
+      <button id="q-gotit-btn">GOT IT — FIND NEXT QR →</button>
+    </div>
   </div>
 </div>
 
@@ -236,7 +265,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0D0D1A;color:#fff;f
       <th style="width:28px">#</th>
       <th>NAME</th>
       <th style="width:60px">SCORE</th>
-      <th style="width:72px;font-size:9px">LEVEL</th>
+      <th style="width:72px;font-size:11px">LEVEL</th>
       <th style="width:24px">&#10003;</th>
     </tr></thead>
     <tbody id="lb-body"></tbody>
@@ -255,7 +284,7 @@ const GAME_CONFIG = {
   name: "Ready,Set, Recover",
   tagline: "This isn't just a policy... it's a 'Play'book.",
   timerDuration: 60,
-  speedBonusThresholds: [10, 20, 30],
+  speedBonusThresholds: [5, 10, 15],
   speedBonusValues: [50, 25, 10, 0],
   failureMessages: [
     "Your server just caught fire. Try again!",
@@ -283,31 +312,36 @@ const GAME_CONFIG = {
           label: "WHO OWNS THIS?",
           text: "The grid is dead and panic is setting in! According to business continuity policy, who holds the authority to formally activate the BCP?",
           options: ["The most senior leader who's still reachable", "The Plan Owner", "BCP Team", "Global Safety Ops"],
-          correct: 1
+          correct: 1,
+          explanation: "The Plan Owner holds formal accountability for activating the BCP. Seniority alone does not confer this authority. Clear ownership is a cornerstone of effective business continuity governance."
         },
         {
           label: "FIRST CALL?",
           text: "BCP activated. Word is spreading. Who must be alerted immediately before the rumour mill takes over?",
           options: ["HR & Facilities at the Mumbai site", "2nd Line of Defence", "Executive Committee", "Operational Risk Management Committee"],
-          correct: 2
+          correct: 2,
+          explanation: "Senior leadership must be alerted at the outset of a BCP activation. Timely escalation to Executive Committee ensures decisions are made at the right level and that the organisation can respond in a coordinated, controlled way."
         },
         {
           label: "DO YOU HAVE TIME?",
           text: "Two hours have passed. Operations are still down. A colleague says: 'Relax, we have until end of day.' For your most critical processes — are they right?",
           options: ["Yes — critical processes have a 72-hour recovery window. Relax.", "No — The most critical processes recover within 24 hours of disruption.", "72 hours from when Plan Owner formally declares the incident.", "It's a natural disaster — Force Majeure applies. Stand down."],
-          correct: 1
+          correct: 1,
+          explanation: "Recovery Time Objectives exist precisely to prevent complacency. For the most critical processes, recovery must begin immediately. A natural disaster does not suspend your RTO obligations."
         },
         {
           label: "WHO'S WATCHING?",
           text: "While you fight fires internally, who is specifically responsible for monitoring the broader threat and escalating if things get worse?",
           options: ["Incident Response Team", "BCC Teams across the org", "Global Security Ops Teams", "Corporate Services"],
-          correct: 2
+          correct: 2,
+          explanation: "While internal teams manage operational recovery, Global Security Operations maintains situational awareness of the external threat landscape and is responsible for escalating if the situation worsens beyond the initial scope."
         },
         {
           label: "AFTERMATH?",
           text: "Crisis over. But an app missed RTO, a vendor went dark for 3 hours, and a recovery step failed. What does policy require you to do?",
           options: ["Tell team leadership what went wrong", "Plan Owner updates the BCP internally", "Document every gap in the Issue Management System", "Delegate the whole mess to the BCC team"],
-          correct: 2
+          correct: 2,
+          explanation: "Post-incident documentation is not optional. Every gap, failure, and missed RTO must be formally recorded so that root causes are addressed, plans are strengthened, and the organisation learns from the event."
         }
       ]
     },
@@ -319,31 +353,36 @@ const GAME_CONFIG = {
           label: "WHO OWNS THIS?",
           text: "Sirens blaring, building empty. According to policy, who has the authority and accountability to activate the BCP and make the tough calls?",
           options: ["Global Security Ops", "The Plan Owner", "BCP Team"],
-          correct: 1
+          correct: 1,
+          explanation: "Authority must be clearly assigned before a crisis happens, not determined by who happens to be available when it strikes. The Plan Owner is accountable regardless of the circumstances of the disruption."
         },
         {
           label: "LEAD IS GONE?",
           text: "Your primary recovery lead evacuated without their phone. Totally unreachable. What should already be in the plan to handle exactly this?",
           options: ["Call the 2nd Line of Defence", "Escalate to the Executive Committee", "Activate the alternate recovery team leader named in the plan"],
-          correct: 2
+          correct: 2,
+          explanation: "A robust BCP anticipates the unavailability of key personnel. Every critical role should have a named alternate. A plan that only works when the right people are available is not a plan — it's a hope."
         },
         {
           label: "WHAT'S IN THE PLAN?",
           text: "Two hours out. Processes halted. Work can only resume at an alternate location. What must your BCP already contain for this exact moment?",
           options: ["Recovery script with steps to execute the alternate location strategy", "Stakeholder comms explaining activities are paused", "Confirmation the alternate location is accessible within RTO"],
-          correct: 0
+          correct: 0,
+          explanation: "Documentation and confirmation are not enough on their own. Your plan must contain actionable, executable steps so that any trained team member can pick it up and resume operations without relying on institutional memory."
         },
         {
           label: "HOW OFTEN?",
           text: "To make sure this plan doesn't become stale and useless — how often must the BCP be formally reviewed and approved?",
           options: ["Monthly", "Quarterly", "Annually"],
-          correct: 2
+          correct: 2,
+          explanation: "BCPs must be reviewed at least annually to reflect changes in personnel, technology, processes, vendors, and risk profile. A plan that has not been reviewed is a plan that cannot be trusted."
         },
         {
           label: "WHAT NOW?",
           text: "Dust settled. But a key recovery step failed completely. A 3rd party was unreachable. An app missed RTO. What does policy require of you right now?",
           options: ["Communicate the gaps to team leadership", "Plan Owner updates the BCP plan internally", "Document every gap in the Issue Management System", "Delegate resolution to the BCC team"],
-          correct: 2
+          correct: 2,
+          explanation: "Post-incident documentation is not optional. Every gap, failure, and missed RTO must be formally recorded so that root causes are addressed, plans are strengthened, and the organisation learns from the event."
         }
       ]
     }
@@ -359,7 +398,8 @@ const ST = {
   spinning:false, spinDone:false, spinAngle:0,
   spinCtx:null, spinSize:0, forcedLevel:-1,
   newLBTs:null, failIdx:0, gameOver:false,
-  introCd:null, speedRAF:null, lastWrongQR:0
+  introCd:null, speedRAF:null, lastWrongQR:0,
+  timerPaused:false
 };
 
 let _video = null, _canvas = null, _ctx = null;
@@ -381,6 +421,7 @@ G('lb-icon').addEventListener('click', showLB);
 G('back-btn').addEventListener('click', () => { resetState(); showScreen('s1'); });
 G('activate-btn').addEventListener('click', activateCrisisMode);
 G('claim-btn').addEventListener('click', claimScore);
+G('q-gotit-btn').addEventListener('click', dismissExplanation);
 G('other-btn').addEventListener('click', tryOtherCrisis);
 
 ['fb-q1','fb-q2','fb-q3','fb-q4','fb-q5'].forEach((id, i) => {
@@ -628,12 +669,15 @@ function updateFBButtons(){
 function startTimer(){
   clearInterval(ST.timerID);
   ST.timerID = setInterval(() => {
-    if(ST.gameOver) return;
+    if(ST.gameOver || ST.timerPaused) return;
     ST.timeLeft = Math.max(0, ST.timeLeft - 1);
     updateTimerDisplay(); updateTimerBar();
     if(ST.timeLeft <= 0){ clearInterval(ST.timerID); endGame(); }
   }, 1000);
 }
+
+function pauseTimer(){ ST.timerPaused = true; }
+function resumeTimer(){ ST.timerPaused = false; }
 
 function updateTimerDisplay(){
   const el = G('hud-timer');
@@ -667,18 +711,19 @@ function startSpeedDisplay(){
   (function loop(){
     if(!ST.qOpen){ ST.speedRAF = null; return; }
     const elapsed = (Date.now() - ST.qStart) / 1000;
+    const t = GAME_CONFIG.speedBonusThresholds;
     let label, pct, color;
-    if(elapsed < 10){
-      pct = 1 - elapsed / 10;
-      label = '+50 SPEED BONUS — ' + Math.ceil(10 - elapsed) + 's LEFT';
+    if(elapsed < t[0]){
+      pct = 1 - elapsed / t[0];
+      label = '+50 SPEED BONUS — ' + Math.ceil(t[0] - elapsed) + 's LEFT';
       color = '#4CAF50';
-    } else if(elapsed < 20){
-      pct = 1 - (elapsed - 10) / 10;
-      label = '+25 SPEED BONUS — ' + Math.ceil(20 - elapsed) + 's LEFT';
+    } else if(elapsed < t[1]){
+      pct = 1 - (elapsed - t[0]) / (t[1] - t[0]);
+      label = '+25 SPEED BONUS — ' + Math.ceil(t[1] - elapsed) + 's LEFT';
       color = '#FFB800';
-    } else if(elapsed < 30){
-      pct = 1 - (elapsed - 20) / 10;
-      label = '+10 SPEED BONUS — ' + Math.ceil(30 - elapsed) + 's LEFT';
+    } else if(elapsed < t[2]){
+      pct = 1 - (elapsed - t[1]) / (t[2] - t[1]);
+      label = '+10 SPEED BONUS — ' + Math.ceil(t[2] - elapsed) + 's LEFT';
       color = '#FF2D2D';
     } else {
       pct = 0; label = 'SPEED BONUS GONE — ANSWER NOW!'; color = '#FF2D2D';
@@ -715,6 +760,7 @@ function openQuestion(){
     btn.addEventListener('click', () => submitAnswer(i, btn));
     opts.appendChild(btn);
   });
+  G('q-explanation').style.display = 'none';
   G('speed-bar').style.transform = 'scaleX(1)';
   G('speed-bar').style.background = '#4CAF50';
   ST.qStart = Date.now();
@@ -722,7 +768,7 @@ function openQuestion(){
   startSpeedDisplay();
 }
 
-// ONE ATTEMPT ONLY — correct or wrong, closes after 2.2 s
+// ONE ATTEMPT ONLY — shows explanation panel, timer pauses until player taps GOT IT
 function submitAnswer(idx, btn){
   if(ST.answered) return;
   ST.answered = true;
@@ -733,7 +779,6 @@ function submitAnswer(idx, btn){
   allBtns.forEach(b => { b.disabled = true; b.classList.add('dim'); });
 
   const isLast = (ST.q === 4);
-  const nextHint = isLast ? 'CALCULATING YOUR SCORE...' : 'NEXT → FIND QR CODE #' + (ST.q + 2);
 
   if(idx === qd.correct){
     const pts = 100 + getSpeedBonus();
@@ -741,7 +786,7 @@ function submitAnswer(idx, btn){
     btn.classList.remove('dim'); btn.classList.add('correct');
     G('q-feedback').textContent = '+' + pts + ' PTS — CRISIS AVERTED!';
     G('q-fail-msg').textContent = '';
-    G('q-next-hint').textContent = nextHint;
+    G('q-next-hint').textContent = '';
     updateHUD();
   } else {
     if(allBtns[qd.correct]){
@@ -752,10 +797,38 @@ function submitAnswer(idx, btn){
     G('q-fail-msg').textContent = GAME_CONFIG.failureMessages[ST.failIdx % GAME_CONFIG.failureMessages.length];
     ST.failIdx++;
     G('q-feedback').textContent = '+0 PTS';
-    G('q-next-hint').textContent = nextHint;
+    G('q-next-hint').textContent = '';
   }
 
-  setTimeout(() => { closeS4(); ST.qOpen = false; advanceQuestion(); }, 2200);
+  // Clear speed bar, populate & show explanation panel, pause timer
+  G('q-speed').textContent = '';
+  G('speed-bar').style.transform = 'scaleX(0)';
+
+  const wasCorrect = (idx === qd.correct);
+  const ptsEarned  = wasCorrect ? (100 + getSpeedBonus()) : 0;
+  // ptsEarned was already added to ST.score in the correct branch above;
+  // here we just display it — no double-counting.
+
+  // Result row
+  G('q-exp-verdict').textContent = wasCorrect ? '✓  CORRECT' : '✗  INCORRECT';
+  G('q-exp-pts').textContent     = wasCorrect ? '+' + ptsEarned + ' PTS' : '+0 PTS';
+  const panel = G('q-explanation');
+  panel.classList.remove('exp-correct','exp-wrong');
+  panel.classList.add(wasCorrect ? 'exp-correct' : 'exp-wrong');
+
+  // Explanation text & button label
+  G('q-exp-text').textContent = qd.explanation || '';
+  G('q-gotit-btn').textContent = isLast ? 'SEE MY SCORE →' : 'GOT IT — FIND QR CODE #' + (ST.q + 2) + ' →';
+  panel.style.display = 'flex';
+  pauseTimer();
+}
+
+function dismissExplanation(){
+  G('q-explanation').style.display = 'none';
+  resumeTimer();
+  closeS4();
+  ST.qOpen = false;
+  advanceQuestion();
 }
 
 function advanceQuestion(){
@@ -826,7 +899,7 @@ function renderLB(){
   if(!lb.length){
     const tr = document.createElement('tr');
     const td = document.createElement('td');
-    td.colSpan = 5; td.style.cssText = 'text-align:center;color:#555;padding:20px;font-size:12px;';
+    td.colSpan = 5; td.style.cssText = 'text-align:center;color:#555;padding:20px;font-size:14px;';
     td.textContent = 'No scores yet. Be the first!';
     tr.appendChild(td); tbody.appendChild(tr); return;
   }
@@ -839,7 +912,7 @@ function renderLB(){
       '<td style="font-weight:700;color:' + (i===0?'#FFB800':'#888') + '">' + (i+1) + '</td>' +
       '<td style="font-weight:600">' + e.name + '</td>' +
       '<td style="color:#FF2D2D;font-weight:700">' + e.score + '</td>' +
-      '<td style="font-size:10px;color:#666">' + lvlShort + '</td>' +
+      '<td style="font-size:12px;color:#666">' + lvlShort + '</td>' +
       '<td style="color:#4CAF50;font-weight:700">' + e.correct + '</td>';
     tbody.appendChild(tr);
   });
@@ -856,7 +929,11 @@ function resetState(){
   ST.spinning=false; ST.spinDone=false; ST.spinAngle=0;
   ST.forcedLevel=-1; ST.newLBTs=null; ST.failIdx=0;
   ST.gameOver=false; ST.lastWrongQR=0; ST.speedRAF=null;
+  ST.timerPaused=false;
   closeS4();
+  const _ep = G('q-explanation');
+  _ep.style.display = 'none';
+  _ep.classList.remove('exp-correct','exp-wrong');
   G('fallback').style.display = 'none';
   G('scenario-overlay').style.display = 'none';
   G('wrong-qr-msg').style.opacity = '0';
