@@ -283,31 +283,31 @@ const GAME_CONFIG = {
           label: "WHO OWNS THIS?",
           text: "The grid is dead and panic is setting in! According to business continuity policy, who holds the authority to formally activate the BCP?",
           options: ["The most senior leader who's still reachable", "The Plan Owner", "BCP Team", "Global Safety Ops"],
-          correct: 2
+          correct: 1
         },
         {
           label: "FIRST CALL?",
           text: "BCP activated. Word is spreading. Who must be alerted immediately before the rumour mill takes over?",
           options: ["HR & Facilities at the Mumbai site", "2nd Line of Defence", "Executive Committee", "Operational Risk Management Committee"],
-          correct: 3
+          correct: 2
         },
         {
           label: "DO YOU HAVE TIME?",
           text: "Two hours have passed. Operations are still down. A colleague says: 'Relax, we have until end of day.' For your most critical processes — are they right?",
           options: ["Yes — critical processes have a 72-hour recovery window. Relax.", "No — The most critical processes recover within 24 hours of disruption.", "72 hours from when Plan Owner formally declares the incident.", "It's a natural disaster — Force Majeure applies. Stand down."],
-          correct: 2
+          correct: 1
         },
         {
           label: "WHO'S WATCHING?",
           text: "While you fight fires internally, who is specifically responsible for monitoring the broader threat and escalating if things get worse?",
           options: ["Incident Response Team", "BCC Teams across the org", "Global Security Ops Teams", "Corporate Services"],
-          correct: 3
+          correct: 2
         },
         {
           label: "AFTERMATH?",
           text: "Crisis over. But an app missed RTO, a vendor went dark for 3 hours, and a recovery step failed. What does policy require you to do?",
           options: ["Tell team leadership what went wrong", "Plan Owner updates the BCP internally", "Document every gap in the Issue Management System", "Delegate the whole mess to the BCC team"],
-          correct: 3
+          correct: 2
         }
       ]
     },
@@ -319,31 +319,31 @@ const GAME_CONFIG = {
           label: "WHO OWNS THIS?",
           text: "Sirens blaring, building empty. According to policy, who has the authority and accountability to activate the BCP and make the tough calls?",
           options: ["Global Security Ops", "The Plan Owner", "BCP Team"],
-          correct: 2
+          correct: 1
         },
         {
           label: "LEAD IS GONE?",
           text: "Your primary recovery lead evacuated without their phone. Totally unreachable. What should already be in the plan to handle exactly this?",
           options: ["Call the 2nd Line of Defence", "Escalate to the Executive Committee", "Activate the alternate recovery team leader named in the plan"],
-          correct: 3
+          correct: 2
         },
         {
           label: "WHAT'S IN THE PLAN?",
           text: "Two hours out. Processes halted. Work can only resume at an alternate location. What must your BCP already contain for this exact moment?",
           options: ["Recovery script with steps to execute the alternate location strategy", "Stakeholder comms explaining activities are paused", "Confirmation the alternate location is accessible within RTO"],
-          correct: 1
+          correct: 0
         },
         {
           label: "HOW OFTEN?",
           text: "To make sure this plan doesn't become stale and useless — how often must the BCP be formally reviewed and approved?",
           options: ["Monthly", "Quarterly", "Annually"],
-          correct: 3
+          correct: 2
         },
         {
           label: "WHAT NOW?",
           text: "Dust settled. But a key recovery step failed completely. A 3rd party was unreachable. An app missed RTO. What does policy require of you right now?",
           options: ["Communicate the gaps to team leadership", "Plan Owner updates the BCP plan internally", "Document every gap in the Issue Management System", "Delegate resolution to the BCC team"],
-          correct: 3
+          correct: 2
         }
       ]
     }
@@ -744,8 +744,10 @@ function submitAnswer(idx, btn){
     G('q-next-hint').textContent = nextHint;
     updateHUD();
   } else {
-    allBtns[qd.correct].classList.remove('dim');
-    allBtns[qd.correct].classList.add('correct');
+    if(allBtns[qd.correct]){
+      allBtns[qd.correct].classList.remove('dim');
+      allBtns[qd.correct].classList.add('correct');
+    }
     btn.classList.remove('dim'); btn.classList.add('wrong-final');
     G('q-fail-msg').textContent = GAME_CONFIG.failureMessages[ST.failIdx % GAME_CONFIG.failureMessages.length];
     ST.failIdx++;
